@@ -40,6 +40,20 @@
 
       --easing:     cubic-bezier(0.25, 0.46, 0.45, 0.94);
       --easing-out: cubic-bezier(0.16, 1, 0.3, 1);
+
+      --transition-theme: background-color 0.4s var(--easing), color 0.4s var(--easing), border-color 0.4s var(--easing);
+    }
+
+    /* ─── LIGHT MODE ─── */
+    body.light {
+      --black:       #f8f7f4;
+      --off-black:   #f0eeea;
+      --surface:     #e8e6e1;
+      --surface-2:   #dedad4;
+      --border:      rgba(0,0,0,0.09);
+      --white:       #1a1a18;
+      --white-dim:   rgba(26,26,24,0.58);
+      --white-faint: rgba(26,26,24,0.08);
     }
 
     html { scroll-behavior: smooth; font-size: 16px; }
@@ -52,6 +66,7 @@
       line-height: 1.6;
       overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
+      transition: var(--transition-theme);
     }
 
     ::selection { background: var(--gold); color: var(--black); }
@@ -97,6 +112,9 @@
       background: rgba(5,5,5,0.94);
       backdrop-filter: blur(20px);
       border-bottom: 1px solid var(--border);
+    }
+    body.light .nav.scrolled {
+      background: rgba(248,247,244,0.94);
     }
 
     .nav-logo {
@@ -854,6 +872,88 @@
       .industries-grid { grid-template-columns: repeat(2, 1fr); }
       .cta-buttons { flex-direction: column; }
     }
+
+    /* ─────────────────────────────────────────────
+       THEME TOGGLE
+    ───────────────────────────────────────────── */
+    .theme-toggle {
+      display: flex; align-items: center; gap: 0.5rem;
+      background: none; border: 1px solid var(--border);
+      cursor: pointer; padding: 0.45rem 0.7rem;
+      border-radius: 999px;
+      transition: border-color 0.3s, background 0.3s;
+      flex-shrink: 0;
+    }
+    .theme-toggle:hover { border-color: var(--gold); background: var(--surface); }
+
+    .toggle-track {
+      width: 32px; height: 18px;
+      background: var(--surface-2);
+      border-radius: 999px;
+      position: relative;
+      transition: background 0.3s;
+      border: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    body.light .toggle-track { background: var(--gold); }
+
+    .toggle-thumb {
+      position: absolute;
+      top: 2px; left: 2px;
+      width: 12px; height: 12px;
+      border-radius: 50%;
+      background: var(--white-dim);
+      transition: transform 0.3s var(--easing-out), background 0.3s;
+    }
+    body.light .toggle-thumb {
+      transform: translateX(14px);
+      background: #fff;
+    }
+
+    .toggle-icon {
+      font-size: 0.75rem;
+      line-height: 1;
+      user-select: none;
+    }
+
+    /* Ensure all surfaces transition */
+    .nav, .marquee-section, .reality-card, .about-section,
+    .about-pillar, .service-card, .program-card, .industry-item,
+    .insight-card, .quote-section, .cta-section, .footer,
+    .mobile-menu, .hero-video-wrap .video-placeholder {
+      transition: background-color 0.4s var(--easing), border-color 0.4s var(--easing), color 0.4s var(--easing);
+    }
+
+    /* Light mode — hero background override */
+    body.light .hero-bg {
+      background:
+        radial-gradient(ellipse 90% 70% at 15% 55%, rgba(220,210,200,0.9) 0%, transparent 65%),
+        radial-gradient(ellipse 60% 80% at 85% 25%, rgba(210,205,200,0.7) 0%, transparent 60%),
+        linear-gradient(135deg, #f0ede8 0%, #f8f7f4 45%, #f0edea 100%);
+    }
+    body.light .hero-noise { opacity: 0.015; }
+    body.light .hero-video-wrap .video-placeholder {
+      background:
+        radial-gradient(ellipse 120% 100% at 70% 50%, rgba(155,28,28,0.04) 0%, transparent 60%),
+        linear-gradient(135deg, #ede8e8 0%, #f8f7f4 50%, #edebeb 100%);
+    }
+    body.light .hero-video-wrap::after {
+      background: linear-gradient(to bottom, transparent 50%, var(--black) 100%);
+    }
+
+    /* Light mode — quote bg text still faint */
+    body.light .quote-bg-text { color: rgba(26,26,24,0.03); }
+
+    /* Light mode — scrollbar */
+    body.light ::-webkit-scrollbar-track { background: var(--off-black); }
+
+    /* Light mode — btn primary text stays black (it's on red bg) */
+    .btn-primary, .nav-cta, .program-cta:not(.ghost), .cta-submit { color: #fff !important; }
+    body.light .btn-primary, body.light .nav-cta,
+    body.light .program-cta:not(.ghost) { color: #fff !important; }
+
+    /* Light mode — mobile menu */
+    body.light .mobile-menu { background: var(--black); }
   </style>
 </head>
 <body>
@@ -884,7 +984,13 @@
       <li><a href="#programs">BrandCraft</a></li>
       <li><a href="#insights">Insights</a></li>
     </ul>
-    <a href="#accelerator" class="nav-cta">Join Accelerator</a>
+    <div style="display:flex;align-items:center;gap:1rem;">
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle light/dark mode">
+        <span class="toggle-icon" id="toggleIcon">🌙</span>
+        <div class="toggle-track"><div class="toggle-thumb"></div></div>
+      </button>
+      <a href="#accelerator" class="nav-cta">Join Accelerator</a>
+    </div>
     <button class="nav-hamburger" id="hamburger" aria-label="Open menu">
       <span></span><span></span><span></span>
     </button>
@@ -1343,6 +1449,23 @@
     hamburger.addEventListener('click', () => mobileMenu.classList.add('open'));
     mobileClose.addEventListener('click', () => mobileMenu.classList.remove('open'));
     mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => mobileMenu.classList.remove('open')));
+
+    // ── THEME TOGGLE ──
+    const themeToggle = document.getElementById('themeToggle');
+    const toggleIcon  = document.getElementById('toggleIcon');
+    const body        = document.body;
+
+    // Restore preference
+    if (localStorage.getItem('theme') === 'light') {
+      body.classList.add('light');
+      toggleIcon.textContent = '☀️';
+    }
+
+    themeToggle.addEventListener('click', () => {
+      const isLight = body.classList.toggle('light');
+      toggleIcon.textContent = isLight ? '☀️' : '🌙';
+      localStorage.setItem('theme', isLight ? 'light' : 'dark');
+    });
   </script>
 </body>
 </html>
