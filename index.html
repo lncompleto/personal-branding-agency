@@ -256,17 +256,17 @@
       right: 4rem;
       z-index: 4;
       font-family: var(--font-sans);
-      font-size: 0.6rem; font-weight: 600;
-      letter-spacing: 0.3em; text-transform: uppercase;
-      color: var(--white);
+      font-size: 0.58rem; font-weight: 400;
+      letter-spacing: 0.25em; text-transform: uppercase;
+      color: rgba(245,245,240,0.42);
       display: flex; align-items: center; gap: 0.8rem;
       opacity: 0;
-      background: rgba(155,28,28,0.85);
-      backdrop-filter: blur(8px);
-      padding: 0.6rem 1.2rem;
-      border-left: 2px solid var(--gold);
     }
-    .hero-eyebrow::before { display: none; }
+    .hero-eyebrow::before {
+      content: ''; display: block;
+      width: 20px; height: 1px;
+      background: rgba(245,245,240,0.3);
+    }
 
     .hero-headline {
       font-family: var(--font-serif);
