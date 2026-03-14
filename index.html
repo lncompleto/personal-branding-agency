@@ -258,14 +258,14 @@
       font-family: var(--font-sans);
       font-size: 0.6rem; font-weight: 500;
       letter-spacing: 0.28em; text-transform: uppercase;
-      color: rgba(30,30,28,0.75);
+      color: rgba(245,245,240,0.75);
       display: flex; align-items: center; gap: 0.8rem;
       opacity: 0;
     }
     .hero-eyebrow::before {
       content: ''; display: block;
       width: 20px; height: 1px;
-      background: rgba(30,30,28,0.5);
+      background: rgba(245,245,240,0.5);
     }
 
     .hero-headline {
@@ -941,6 +941,20 @@
     }
 
     body.light .hero-noise { opacity: 0.01; }
+
+    /* Eyebrow: light text on dark mode, dark text on light mode */
+    .hero-eyebrow {
+      color: rgba(245,245,240,0.75);
+    }
+    .hero-eyebrow::before {
+      background: rgba(245,245,240,0.5);
+    }
+    body.light .hero-eyebrow {
+      color: rgba(30,30,28,0.75);
+    }
+    body.light .hero-eyebrow::before {
+      background: rgba(30,30,28,0.4);
+    }
 
     /* Light mode — quote bg text still faint */
     body.light .quote-bg-text { color: rgba(26,26,24,0.03); }
