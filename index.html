@@ -118,24 +118,19 @@
     }
 
     .nav-logo {
-      display: flex; align-items: center; gap: 0.6rem;
+      display: flex; align-items: center;
     }
-    .nav-logo-mark {
-      font-family: var(--font-serif);
-      font-size: 1.5rem; font-weight: 900;
-      letter-spacing: 0.05em;
-      color: var(--white);
-      line-height: 1;
+    .nav-logo img {
+      height: 36px;
+      width: auto;
+      display: block;
+      /* Invert to white in dark mode */
+      filter: brightness(0) invert(1);
+      transition: filter 0.4s var(--easing);
     }
-    .nav-logo-mark span { color: var(--gold); }
-    .nav-logo-sub {
-      font-family: var(--font-sans);
-      font-size: 0.55rem; font-weight: 500;
-      letter-spacing: 0.3em; text-transform: uppercase;
-      color: var(--white-dim);
-      border-left: 1px solid var(--border);
-      padding-left: 0.7rem;
-      margin-left: 0.2rem;
+    body.light .nav-logo img {
+      /* Show original red+black logo in light mode */
+      filter: none;
     }
 
     .nav-links { display: flex; gap: 2.5rem; list-style: none; }
@@ -954,6 +949,9 @@
 
     /* Light mode — mobile menu */
     body.light .mobile-menu { background: var(--black); }
+
+    /* Light mode — footer logo shows original colors */
+    body.light .footer-logo { filter: none !important; }
   </style>
 </head>
 <body>
@@ -975,8 +973,7 @@
   <!-- NAV -->
   <nav class="nav" id="nav">
     <a href="#" class="nav-logo">
-      <span class="nav-logo-mark">Agyle<span>.</span></span>
-      <span class="nav-logo-sub">Brands</span>
+      <img src="logo.png" alt="Agyle Brands" />
     </a>
     <ul class="nav-links">
       <li><a href="#services">Our Services</a></li>
@@ -1338,7 +1335,7 @@
   <footer class="footer">
     <div class="footer-inner">
       <div class="footer-brand">
-        <div class="footer-brand-name">Agyle<span>.</span> Brands</div>
+        <img src="logo.png" alt="Agyle Brands" style="height:32px;width:auto;filter:brightness(0) invert(1);margin-bottom:0.6rem;" class="footer-logo" />
         <div class="footer-brand-tagline">A Future Stakes Venture</div>
         <p>We combine strategic thinking, hands-on execution, and a powerful partner network to help Filipino product brands scale with confidence.</p>
       </div>
